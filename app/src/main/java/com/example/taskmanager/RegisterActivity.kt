@@ -11,14 +11,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterActivity : AppCompatActivity() {
-    private lateinit var firestore: FirebaseFirestore
+
+    private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        firestore = FirebaseFirestore.getInstance()
+        db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
 
         val emailEditText = findViewById<EditText>(R.id.email)
@@ -28,6 +29,7 @@ class RegisterActivity : AppCompatActivity() {
         val name = findViewById<EditText>(R.id.name)
 
         Button.setOnClickListener {
+
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
             val name = name.text.toString()
@@ -41,7 +43,7 @@ class RegisterActivity : AppCompatActivity() {
                     "name" to name
                 )
 
-                firestore.collection("users")
+                db.collection("users")
                     .document(user?.uid ?: "")
                     .set(userMap)
                     .addOnCompleteListener { task ->
